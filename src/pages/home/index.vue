@@ -1,26 +1,66 @@
 <template>
   <div>
+    <!-- 搜索框 -->
     <div class="search">
       <icon type="search"></icon>
       <span>搜索</span>
     </div>
+    <!-- 轮播图 -->
     <swiper class="swiper"
             :indicator-dots="true"
             autoplay
             circular
             interval="3000">
-      <swiper-item v-for="(item,index) in swiperList"
+      <swiper-item v-for="(item,index) in swiperData"
                    :key="index">
         <image class="swiper_img"
                :src="item.image_src"></image>
       </swiper-item>
     </swiper>
+    <!-- 导航菜单栏 -->
     <div class="nav">
       <div class="nav_item"
-           v-for="(item,index) in navList"
+           v-for="(item,index) in navData"
            :key="index">
         <img :src="item.image_src">
       </div>
+    </div>
+    <!-- 商品列表栏floorData -->
+    <div class="floor"
+         v-for="(item, index0) in floorData"
+         :key="index0">
+      <div class="floor_title">
+        <img class="floor_title_img"
+             :src="item.floor_title.image_src">
+      </div>
+      <div class="floor_content">
+        <div class="floor_content_item left">
+          <img class="left_pic"
+               :src="item.leftData.image_src"
+               alt="">
+        </div>
+        <div class="floor_content_item middle">
+          <img class="other_pic"
+               :key="index1"
+               v-for="(item_middle, index1) in item.middleData"
+               :src="item_middle.image_src"
+               alt="">
+        </div>
+        <div class="floor_content_item right">
+          <img class="other_pic"
+               :key="index2"
+               v-for="(item_right, index2) in item.rightData"
+               :src="item_right.image_src"
+               alt="">
+        </div>
+      </div>
+    </div>
+    <!-- 返回顶部按钮 -->
+    <div class="returnTop"
+         v-show="isShow"
+         @click="returnTop">
+      ︽
+      <p>top</p>
     </div>
   </div>
 </template>
@@ -30,16 +70,31 @@ import request from '../../utils/request'
 export default {
   data () {
     return {
-      swiperList: [],
-      navList: []
+      swiperData: [],
+      navData: [],
+      floorData: [],
+      isShow: false
     }
   },
   methods: {
     async initData () {
       const swiperRes = await request('home/swiperdata', 'GET')
-      this.swiperList = swiperRes.data.message
+      this.swiperData = swiperRes.data.message
       const navRes = await request('home/catitems', 'GET')
-      this.navList = navRes.data.message
+      this.navData = navRes.data.message
+      const floorRes = await request('home/floordata', 'GET')
+      let floorInitData = floorRes.data.message
+      this.floorData = floorInitData.map(item => {
+        item.leftData = item.product_list[0]
+        item.middleData = item.product_list.slice(1, 3)
+        item.rightData = item.product_list.slice(3)
+        return item
+      })
+    },
+    returnTop () {
+      mpvue.pageScrollTo({
+        scrollTop: 0
+      })
     }
   },
   async created () {
@@ -63,6 +118,12 @@ export default {
 
     // 下面将数据初始化处理的代码放到methods中
     this.initData()
+  },
+  onPullDownRefresh () {
+    this.initData()
+  },
+  onPageScroll (params) {
+    this.isShow = params.scrollTop > 100
   }
 }
 </script>
@@ -94,6 +155,43 @@ export default {
 .nav .nav_item img {
   width: 100rpx;
   height: 110rpx;
-  margin: 10rpx;
+  margin: 20rpx 0rpx 0rpx 0rpx;
+}
+.floor {
+  margin-top: 20rpx;
+}
+.floor_title {
+  height: 60rpx;
+}
+.floor_title .floor_title_img {
+  height: 60rpx;
+}
+.floor_content {
+  display: flex;
+  justify-content: space-around;
+}
+.floor_content .floor_content_item {
+  width: 232rpx;
+  height: 385rpx;
+}
+.floor_content .floor_content_item .left_pic {
+  width: 232rpx;
+  height: 385rpx;
+}
+.floor_content .floor_content_item .other_pic {
+  width: 232rpx;
+  height: 188rpx;
+  background-color: #fff;
+}
+.returnTop {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 30rpx;
+  right: 30rpx;
+  background-color: #fff;
+  text-align: center;
+  font-size: 30rpx;
 }
 </style>
