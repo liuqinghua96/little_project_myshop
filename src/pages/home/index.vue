@@ -34,7 +34,16 @@ export default {
       navList: []
     }
   },
-  created () {
+  methods: {
+    async initData () {
+      const swiperRes = await request('home/swiperdata', 'GET')
+      this.swiperList = swiperRes.data.message
+      const navRes = await request('home/catitems', 'GET')
+      this.navList = navRes.data.message
+    }
+  },
+  async created () {
+    // 原始request请求
     /* mpvue.request({
       url: 'https://www.ehomespace.com/api/public/v1/home/swiperdata',
       method: 'GET',
@@ -42,15 +51,18 @@ export default {
         this.swiperList = res.data.message
       }
     }) */
-    request('home/swiperdata', 'GET').then(res => { this.swiperList = res.data.message })
-    /* mpvue.request({
-      url: 'https://www.ehomespace.com/api/public/v1/home/catitems',
-      method: 'GET',
-      success: (res) => {
-        this.navList = res.data.message
-      }
-    }) */
-    request('home/catitems', 'GET').then(res => { this.navList = res.data.message })
+
+    // 通过promise方式.then的request请求
+    // request('home/swiperdata', 'GET').then(res => { this.swiperList = res.data.message })
+
+    // 通过async和await方式处理的request请求
+    // const swiperRes = await request('home/swiperdata', 'GET')
+    // this.swiperList = swiperRes.data.message
+    // const navRes = await request('home/catitems', 'GET')
+    // this.navList = navRes.data.message
+
+    // 下面将数据初始化处理的代码放到methods中
+    this.initData()
   }
 }
 </script>
