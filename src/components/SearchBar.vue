@@ -1,7 +1,9 @@
 <template>
   <div class="search">
-    <icon type="search"></icon>
-    <span>搜索</span>
+    <navigator url="/pages/search/main">
+      <icon type="search"></icon>
+      <span>搜索</span>
+    </navigator>
   </div>
 </template>
 

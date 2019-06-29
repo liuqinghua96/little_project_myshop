@@ -52,6 +52,7 @@ export default {
     async getInitData () {
       let cateRes = await request('categories', 'GET')
       this.cateData = cateRes.data.message
+      console.log(this.cateData)
     },
     changeTab (id) {
       this.currentId = id
