@@ -1,10 +1,7 @@
 <template>
   <div>
     <!-- 搜索框 -->
-    <div class="search">
-      <icon type="search"></icon>
-      <span>搜索</span>
-    </div>
+    <search-bar></search-bar>
     <!-- 轮播图 -->
     <swiper class="swiper"
             :indicator-dots="true"
@@ -66,6 +63,7 @@
 </template>
 
 <script>
+import SearchBar from '../../components/SearchBar'
 import request from '../../utils/request'
 export default {
   data () {
@@ -75,6 +73,9 @@ export default {
       floorData: [],
       isShow: false
     }
+  },
+  components: {
+    'search-bar': SearchBar
   },
   methods: {
     async initData () {
@@ -129,5 +130,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @import "./main.less";
+@import "./main.less";
 </style>
