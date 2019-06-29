@@ -1,0 +1,63 @@
+.content {
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 76rpx;
+  bottom: 0;
+}
+.content .left {
+  height: 100%;
+  width: 200rpx;
+  flex-shrink: 0;
+  overflow: auto;
+  background: #eee;
+}
+.content .left .menu-item {
+  height: 102rpx;
+  line-height: 102rpx;
+  text-align: center;
+  position: relative;
+}
+.content .left .active {
+  background: #fff;
+  color: red;
+}
+.content .left .active::before {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 60rpx;
+  position: absolute;
+  left: 0;
+  top: 21rpx;
+  background: red;
+}
+.content .right {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+}
+.content .right .brand-item .brand-title {
+  text-align: center;
+  line-height: 2;
+  font-weight: 700;
+}
+.content .right .brand-item .brand-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.content .right .brand-item .brand-list .brand {
+  width: 33.33%;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+.content .right .brand-item .brand-list .brand img {
+  width: 100%;
+  height: 100rpx;
+}
+.content .right .brand-item .brand-list .brand p {
+  line-height: 1.5;
+  font-size: 14px;
+  text-align: center;
+}
