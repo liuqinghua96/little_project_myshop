@@ -26,8 +26,8 @@
            v-for="(value, name) in cart"
            :key="value.goods_id">
         <!-- 左侧按钮checkbox -->
-        <div class="choice-button">
-          <icon color="#ccc"
+        <div class="choice-button" @click="isChecked(value.goods_id)">
+          <icon :color="value.checked?'red':'#ccc'"
                 type='success'
                 size='18' />
         </div>
@@ -113,6 +113,13 @@ export default {
           that.address = res
         }
       })
+    },
+    isChecked (gid) {
+      // 实现对象的深拷贝操作
+      let newCart = JSON.parse(JSON.stringify(this.cart))
+      newCart[gid].checked = !newCart[gid].checked
+      this.cart = newCart
+      console.log(this.cart)
     }
   },
   onShow () {
