@@ -15,7 +15,7 @@
     </div>
     <!-- 商品列表 -->
     <div class="goods_list">
-      <navigator class="goods-item" :key="item.goods_id" v-for="item in listData">
+      <navigator :url="'/pages/goodsDetail/main?gid=' + item.goods_id" class="goods-item" :key="item.goods_id" v-for="item in listData">
         <img :src="item.goods_small_logo">
         <div class="goods-right">
           <h4>{{item.goods_name}}</h4>

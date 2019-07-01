@@ -5,7 +5,8 @@
     "pages/cart/main",
     "pages/my/main",
     "pages/search/main",
-    "pages/searchList/main"
+    "pages/searchList/main",
+    "pages/goodsDetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
