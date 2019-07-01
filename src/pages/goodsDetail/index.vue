@@ -1,9 +1,14 @@
 <template>
   <div>
     <!-- 轮播图 -->
-    <swiper autoplay circular indicator-dots>
-      <swiper-item v-for="(item, index) in detail.pics" :key="index">
-        <image :src="item.pics_big_url" class="slide-image" mode="aspectFill"/>
+    <swiper autoplay
+            circular
+            indicator-dots>
+      <swiper-item v-for="(item, index) in detail.pics"
+                   :key="index">
+        <image :src="item.pics_big_url"
+               class="slide-image"
+               mode="aspectFill" />
       </swiper-item>
     </swiper>
     <!-- 商品基本信息 -->
@@ -16,7 +21,8 @@
         <div class="goods-star">
           <span class="iconfont icon-shoucang"></span>
           <p>分享</p>
-          <button open-type='share' class="share-btn">分享</button>
+          <button open-type='share'
+                  class="share-btn">分享</button>
         </div>
       </div>
     </div>
@@ -34,14 +40,16 @@
         <span class="iconfont icon-kefu"></span>
         <p>联系客服</p>
       </div>
-      <navigator class="footer-left">
+      <navigator url="/pages/cart/main" open-type="switchTab" class="footer-left">
         <span class="iconfont icon-gouwuche"></span>
         <p>购物车</p>
       </navigator>
-      <div class="footer-right">
+      <div class="footer-right"
+           @click="addCart()">
         加入购物车
       </div>
-      <div class="footer-right">
+      <div class="footer-right"
+           @click="toBuy()">
         立即购买
       </div>
     </div>
@@ -59,8 +67,30 @@ export default {
   },
   methods: {
     async getGoodDetail () {
-      let detailRes = await request('goods/detail', 'GET', {goods_id: this.goodID})
+      let detailRes = await request('goods/detail', 'GET', { goods_id: this.goodID })
       this.detail = detailRes.data.message
+    },
+    toBuy () {
+      this.addCart()
+      mpvue.switchTab({
+        url: '/pages/cart/main'
+      })
+    },
+    addCart () {
+      let cart = mpvue.getStorageSync('mycart') || {}
+      if (cart[this.goodID]) {
+        cart[this.goodID].num++
+      } else {
+        this.detail.num = 1
+        cart[this.goodID] = this.detail
+      }
+      console.log(cart)
+      mpvue.setStorageSync('mycart', cart)
+      // 添加完成之后的提示
+      mpvue.showToast({
+        title: '添加成功',
+        icon: 'success'
+      })
     }
   },
   onLoad (params) {
@@ -71,5 +101,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @import './main.less';
+@import "./main.less";
 </style>
