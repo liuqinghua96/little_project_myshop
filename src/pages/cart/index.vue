@@ -53,9 +53,9 @@
               </div>
               <!-- 数量变更 -->
               <div class="calculate">
-                <div class="rect">-</div>
+                <div @click="cutNum(value.goods_id)" class="rect">-</div>
                 <div class="number">{{value.num}}</div>
-                <div class="rect">+</div>
+                <div @click="addNum(value.goods_id)" class="rect">+</div>
               </div>
             </div>
           </div>
@@ -139,6 +139,20 @@ export default {
       let newCart = JSON.parse(JSON.stringify(this.cart))
       for (let key in newCart) {
         newCart[key].checked = !flag
+      }
+      this.cart = newCart
+    },
+    addNum (gid) {
+      let newCart = JSON.parse(JSON.stringify(this.cart))
+      newCart[gid].num++
+      this.cart = newCart
+    },
+    cutNum (gid) {
+      let newCart = JSON.parse(JSON.stringify(this.cart))
+      if (newCart[gid].num > 1) {
+        newCart[gid].num--
+      } else {
+        delete newCart[gid]
       }
       this.cart = newCart
     }
