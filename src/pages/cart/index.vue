@@ -66,7 +66,8 @@
     <div class="cart-total">
       <!-- 左侧CheckBox -->
       <div class="total-button">
-        <icon :color="isAll?'red':'#ccc'"
+        <icon @click="allChecked()"
+              :color="isAll?'red':'#ccc'"
               type='success'
               size='18' />全选
       </div>
@@ -131,6 +132,14 @@ export default {
       // 实现对象的深拷贝操作
       let newCart = JSON.parse(JSON.stringify(this.cart))
       newCart[gid].checked = !newCart[gid].checked
+      this.cart = newCart
+    },
+    allChecked () {
+      let flag = this.isAll
+      let newCart = JSON.parse(JSON.stringify(this.cart))
+      for (let key in newCart) {
+        newCart[key].checked = !flag
+      }
       this.cart = newCart
     }
   },
