@@ -159,6 +159,9 @@ export default {
   },
   onShow () {
     this.cart = wx.getStorageSync('mycart')
+  },
+  onHide () {
+    this.cart = wx.setStorageSync('mycart', this.cart)
   }
 }
 </script>
