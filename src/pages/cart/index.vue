@@ -93,11 +93,21 @@ export default {
   data () {
     return {
       address: null,
-      cart: {},
-      sumPrice: 0
+      cart: {}
     }
   },
   computed: {
+    // 计算商品总价
+    sumPrice () {
+      let sum = 0
+      for (let key in this.cart) {
+        let item = this.cart[key]
+        if (item.checked) {
+          sum += item.goods_price * item.num
+        }
+      }
+      return sum
+    },
     // 控制全选按钮的颜色
     isAll () {
       let flag = true
