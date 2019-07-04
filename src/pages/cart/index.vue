@@ -26,7 +26,7 @@
            v-for="(value, name) in cart"
            :key="value.goods_id">
         <!-- 左侧按钮checkbox -->
-        <div class="choice-button" @click="isChecked(value.goods_id)">
+        <div class="choice-button" @click="singleChecked(value.goods_id)">
           <icon :color="value.checked?'red':'#ccc'"
                 type='success'
                 size='18' />
@@ -66,7 +66,7 @@
     <div class="cart-total">
       <!-- 左侧CheckBox -->
       <div class="total-button">
-        <icon color='#eee'
+        <icon :color="isAll?'red':'#ccc'"
               type='success'
               size='18' />全选
       </div>
@@ -97,6 +97,19 @@ export default {
     }
   },
   computed: {
+    // 控制全选按钮的颜色
+    isAll () {
+      let flag = true
+      for (let key in this.cart) {
+        // 添加前半句是因为页面初始时所有的购物车数据中都没有checked属性，
+        // 自然也就不可能全等于 false
+        if (!this.cart[key].checked || this.cart[key].checked === false) {
+          flag = false
+          break
+        }
+      }
+      return flag
+    },
     fullAddress () {
       if (!this.address) {
         return ''
@@ -114,12 +127,11 @@ export default {
         }
       })
     },
-    isChecked (gid) {
+    singleChecked (gid) {
       // 实现对象的深拷贝操作
       let newCart = JSON.parse(JSON.stringify(this.cart))
       newCart[gid].checked = !newCart[gid].checked
       this.cart = newCart
-      console.log(this.cart)
     }
   },
   onShow () {
